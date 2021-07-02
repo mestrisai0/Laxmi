@@ -1,0 +1,1 @@
+web : gunicorn LaxmiIndustries.wsgi --log-file -
