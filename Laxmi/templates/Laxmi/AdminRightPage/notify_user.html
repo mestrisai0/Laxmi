@@ -1,0 +1,38 @@
+{% extends 'Laxmi/base.html' %}
+{% load static %}
+{% block notify_user_page %} class=" activeMenu"{% endblock notify_user_page %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="container" style="padding-top:50px;">
+    <div class="card" style="font-size: 18px; ">
+        <div class="card-body" style="padding: 35px;">
+            <h4 class="card-title text-center"><b>Notify User</b></h4>
+
+            <form action="{% url 'notify_user_page' %}" method="POST">
+                {% csrf_token %}
+                <div class="form-group" id='notify_user_select_div'>
+                    <label for="">Client Name: </label>
+                    <select type="text" class="form-control" name="notify_user" id="notify_user_select"
+                        placeholder="Select User">
+                        <option disabled selected> Search User</option>
+                        {% for i in users %}
+                            <option value="{{ i.user }}">{{ i.user }} </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group" id="notify_description_div">
+                    <label for="Notify-description">Description</label>
+                    <textarea class="form-control" name="notify_description" id="notify_description" rows="3"></textarea>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary" id="notify_user_submit">Send Notification</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

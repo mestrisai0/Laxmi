@@ -1,0 +1,82 @@
+{% load static %}
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+    <div class="container-fluid">
+
+        <button type="button" id="sidebarCollapse" class="navbar-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <div class="d-flex justify-content-center">
+            <div class="p-2 flex-grow-1 bd-highlight">
+                <h6></h6>
+            </div>
+        </div>
+        <div class="d-flex justify-content-start">
+            
+            <div class="p-2 flex-grow-1 bd-highlight " style="margin-left: solid 1px grey;">
+                {{ request.user }}
+            </div>
+            <!-- notfication dropdown code -->
+            <div class="g2 btn-group mx-lg-3 mx-0 align-items-center btn-group dropleft">
+
+                <button type="button" class="btn btn-block btn-light rounded" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false" id="noti_alert_button" onclick=make_noti_seen("{% url 'make_all_noti_seen' %}") >
+
+                    <i class="fa fa-bell" aria-hidden="true">
+                        <sup>
+                            <span class="badge text-light bg-danger" id = 'notification_count'>{{ms_count}}</span>
+                        </sup>
+
+                    </i>
+
+                </button>
+                <!-- </form> -->
+                <div class="dropdown-menu mt-1 p-0 dd-notif">
+
+                    <!-- dropdown notif -->
+                    <div class="card notification dropdn" style="width: 330px;">
+                        <div class="card-header darkbg pb-0 text-center ">
+                            <h6 class="text-center text-danger font-weight-bold">
+                                Notification
+                            </h6>
+
+                        </div>
+                        <!-- <div class="modal-dialog" role="document"> -->
+                        <div class="card-content ">
+                            <div class="card-body pl-0 notification_div" id='notification_div_1'>
+
+                                {% for msg in messages %}
+                                    {% if forloop.counter < 6 %}
+                                        <a class="pl-3 my-1 notification_tab {{msg.color_class}}">
+                                            <div class="d-flex flex-row justify-content-between">
+
+                                                <span class="subject">{{ msg.subject }}</span>
+                                                <small class="text-secondary date">{{ msg.date }}</small>
+                                            </div>
+                                            
+                                            <span class="message">{{ msg.text }}</span>
+                                            <span class="text-danger text-right tablecounts"></span>
+                                        </a>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+
+                        </div>
+
+                        <button type="button" class="btn btn-block two-btn alert alert-success h6"
+                            data-toggle="modal" data-target="#notifModal">
+                            View all Notifications
+                        </button>
+                        <!-- </div> -->
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>

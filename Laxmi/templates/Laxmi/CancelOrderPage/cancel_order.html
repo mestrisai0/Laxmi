@@ -1,0 +1,52 @@
+{% extends 'Laxmi/base.html' %}
+{% load static %}
+{% block activemenu_order %}
+aria-expanded="true"
+{% endblock activemenu_order %}
+{% block content %}
+
+<div class="row">
+
+    <div class="col-md text-center">
+
+        
+
+        <div class="card card-body table-responsive">
+            <h3>Cancelled Order</h3>
+            <table class="table table-striped text-center" id="Ordertable">
+                <thead>
+                    <tr class="order-pie">
+                        <th class="text-center">Client Name</th>
+                        <th class="text-center">Client Product</th>
+                        <th class="text-center">Build Location</th>
+                        <th class="text-center">Date</th>
+                        <th class="text-center">File Preview</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        {% for data in complete  %}
+                            <tr>
+                                <td class="text-center">{{data.client_product_id.client_code.client_name}}</td>
+                                <td class="text-center">{{data.client_product_id}}</td>
+                                <td class="text-center">{{data.build_location}}</td>
+                                <td class="text-center">{{data.date_completed | date:"d M Y"}}</td>
+                                <td class="text-center">
+                                    {% if data.file_preview %}
+                                        <a class="btn btn-warning btn-sm" href="{{data.file_preview.url}}" title="view">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+                                    {% else %}
+                                        <a class="btn btn-warning btn-sm disabled" title="No File">
+                                            <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                                        </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

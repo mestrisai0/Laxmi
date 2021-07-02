@@ -1,0 +1,266 @@
+{% load static %}
+
+<form method="POST" enctype="multipart/form-data" novalidate>
+{% csrf_token %}
+
+<div class="form-group" id='client_name_dropdown_div'>
+    <label for="">Client Name: </label>
+    <select type="text" class="form-control client_name_ajax" name="client" id="client_name_dropdown"
+        placeholder="Select Job Priority" onchange=depedent_dropdown_client_product("{% url 'loadClient' %}")>
+        <option disabled selected> Search value</option>
+        {% for i in clients %}
+            <option value="{{ i.client_name }}">{{ i.client_name }} </option>
+        {% endfor %}
+            <option>Create New Client</option>
+    </select>
+</div>
+
+<div class="mb-3 input-client d-none" id='client_name_input_div'>
+    <label for="exampleFormControlInput1" class="form-label">Client Name</label>
+    <input type="text" class="form-control" id="client_name_input" name="client_name_input"
+        placeholder="Enter Client Name" {{client_product_disabled}}>
+    <button onclick="hideInputDropdown('client_name')" class='{{hide_item}}'>&times;</button>
+</div>
+
+<div class="form-group" id='client_product_dropdown_div'>
+    <label for="">Client Product: </label>
+    <select type="text" class="form-control" name="product_name" id="client_product_dropdown"
+        placeholder="Select Job Priority">
+        <option disabled selected> Search value</option>
+        <option>Create New Product</option>
+    </select>
+</div>
+
+<div class="mb-3 input-client d-none" id='client_product_input_div'>
+    <label for="exampleFormControlInput1" class="form-label">Client Product</label>
+    <input type="text" class="form-control" id="client_product_input" name="client_product_input"
+        placeholder="Enter Client Product" {{client_product_disabled}}>
+    <button onclick="hideInputDropdown('client_product')" class='{{hide_item}}'>&times;</button>
+</div>
+
+<!-- check if order is pending  by checkbox-->
+<div class="form-group float-right {{hide_item}}" style="margin-right: 20px;">
+    <input type="checkbox" id="order_confirm_checkbox">
+    <label for="">Order Confirmation</label>
+    <br>
+</div>
+
+<!-- started chckbox and viible if only checkbox is clicked-->
+<!-- Display rest form if checkbox is checked -->
+<div id="new_order_after_checkbox_div" class="d-none">
+    <!-- check punch full -->
+    <div class="form-group" id="punch_input_div">
+        <label for="">Check Punch: </label>
+        <input type="button" href="#" style="margin-left:20px;" class="btn btn-info btn-sm"
+            value="Check Punch" id="checkpunch" href="#showPunch" name="punch_check" style="margin-top:2px;" onclick=check_punch_modal('{% url "loadPunch" %}')>
+        <!-- <div class="form-inline"> -->
+        <input type="text" class="form-control col-sm-12" name="punch" id="punch_input"
+            placeholder="Check Punch Availabilty">
+        <!-- </div> -->
+    </div>
+    <!-- end of check punch -->
+
+    <div class="form-group" id="punch_status_div">
+        <label for="">Punch Status: </label>
+        <select type="text" class="form-control" name="priority" id="punch_status" placeholder="Select Job Priority">
+            <option value="" disabled selected>--</option>
+            <option value="Available">Available</option>
+            <option value="Send Order">Send Order</option>
+            <option value="Punch in Progress">Punch in Progress</option>
+        </select>
+    </div>
+
+    <div class="form-group" id="board_id_div">
+        <label for="">Board ID: </label>
+        <input type="text" class="form-control col-sm-12" name="board_id" id="board_id"
+            placeholder="Board ID" disabled>
+            <!-- <option disabled selected>select</option> -->
+        </select>
+    </div>
+
+    <div class="form-group" id="plate_and_positive_status_div">
+        <label for="">Plate & +ve Status: </label>
+        <select type="text" class="form-control" name="priority" id="plate_and_positive_status"
+            placeholder="Select Job Priority">
+            <option value="" disabled selected>--</option>
+            <option value="Available">Available</option>
+            <option value="Send Order">Send Order</option>
+            <option value="Plate Positive in Progress">Plate Positive in Progress</option>
+        </select>
+    </div>
+
+    <div class="form-group" id = 'build_location_div'>
+        <label for="">Build Location: </label>
+        <select type="text" class="form-control" name="location" id="build_location"
+            placeholder="Select Job Priority">
+            <option disabled selected></option>
+            {% for i in location %}
+            <option value="{{i.location_name}}">{{i.location_name}}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group" id='logo_check_div'>
+        <label for="">Logo: </label>
+        <select type="text" class="form-control" name="logo" id="logo_check"
+            placeholder="Select Job Priority">
+            <option value="">--</option>
+            <option value="False">False</option>
+            <option value="True">True</option>
+        </select>
+    </div>
+
+    <div class="form-group" id='company_box_div'>
+        <label for="">Company Box: </label>
+        <select type="text" class="form-control" name="company_box" id="company_box"
+            placeholder="Select Job Priority">
+            <option value="">--</option>
+            <option value="False">False</option>
+            <option value="True">True</option>
+        </select>
+    </div>
+
+    <div class="form-group" id="keyline_div">
+        <label for="">KeyLine: </label>
+        <input type="text" class="form-control col-sm-12" name="keyline" id="keyline"
+            placeholder="">
+    </div>
+
+    <div class="form-group" id="negative_div">
+        <label for="">Negative: </label>
+        <select type="text" class="form-control" name="negative" id="negative"
+            placeholder="Select Job Priority">
+            <option value="">--</option>
+            <option value="False">False</option>
+            <option value="True">True</option>
+        </select>
+    </div>
+
+    <div class="form-group" id="positive_div">
+        <label for="">Positive: </label>
+        <select type="text" class="form-control" name="positive" id="positive"
+            placeholder="Select Job Priority">
+            <option value="">--</option>
+            <option value="False">False</option>
+            <option value="True">True</option>
+        </select>
+    </div>
+
+    <div class="form-group" id="proofless_file_div">
+        <label for="">Proofless File: </label>
+        <select type="text" class="form-control" name="proofless_file" id="proofless_file"
+            placeholder="Select Job Priority">
+            <option value="">--</option>
+            <option value="False">False</option>
+            <option value="True">True</option>
+        </select>
+    </div>
+
+    <div class="form-group" id="embose_div">
+        <label for="">EMBOSE: </label>
+        <select type="text" class="form-control" name="embose" id="embose"
+            placeholder="Select Job Priority">
+            <option value="">--</option>
+            <option value="False">False</option>
+            <option value="True">True</option>
+        </select>
+    </div>
+
+    <div class="form-group" id="spotuv_div">
+        <label for="">SpotUV: </label>
+        <select type="text" class="form-control" name="spotuv" id="spotuv"
+            placeholder="Select Job Priority">
+            <option value="">--</option>
+            <option value="False">False</option>
+            <option value="True">True</option>
+        </select>
+    </div>
+
+    <div class="form-group" id="foiling_div">
+        <label for="">Foiling: </label>
+        <select type="text" class="form-control" name="foiling" id="foiling"
+            placeholder="Select Job Priority">
+            <option value="">--</option>
+            <option value="False">False</option>
+            <option value="True">True</option>
+        </select>
+    </div>
+
+    <div class="form-group" id="perforation_div">
+        <label for="">Perforation: </label>
+        <select type="text" class="form-control" name="perforation" id="perforation"
+            placeholder="Select Job Priority">
+            <option value="">--</option>
+            <option value="False">False</option>
+            <option value="True">True</option>
+        </select>
+    </div>
+
+    <div class="form-group" id = 'carton_style_div'>
+        <label for="">Carton Style: </label>
+        <input type="text" class="form-control col-sm-12" name="carton_style" id="carton_style"
+         />
+    </div>
+
+    <div class="form-group" id='paper_type_div'>
+        <label for="">Paper/Board Type: </label>
+        <input type="text" id="paper_type" name="paper_type" class="form-control col-sm-12"
+         />
+    </div>
+
+    <div class="form-group" id='colors_div'>
+        <label for="">COLORS: </label>
+        <input type="text" class="form-control col-sm-12" name="colors" id="colors" placeholder=""
+        >
+    </div>
+
+    <div class="form-group" id='due_date_div'>
+        <label for="">Job Due Date: </label>
+        <input type="date" class="form-control" name="due_date" id="due_date"
+            placeholder="Enter Client Code">
+    </div>
+
+    <div class="form-group" id='job_priority_div'>
+        <label for="">Job Priority: </label>
+        <select type="text" class="form-control" name="priority" id="job_priority"
+            placeholder="Select Job Priority">
+            <option value="">--</option>
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+            <option value="Completed">Complete</option>
+        </select>
+    </div>
+
+
+    <div class="form-group" id='input_file_div'>
+        <label for="">File: </label>
+        <input type="file" class="form-control" id="input_file" name="file_modal">
+    </div>
+    <!-- <div class="input-group mb-3" id="file_upload_div">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Upload</span>
+        </div>
+        <div class="custom-file">
+            <input type="file" class="custom-file-input" id="file_upload_input" value='pdf/123.pdf'>
+            <label class="custom-file-label" for="inputGroupFile01">Choose File</label>
+        </div>
+    </div> -->
+    <div class="form-group">
+        <input type="text" name="" id="get_id_c" hidden>
+    </div>
+</div>
+
+
+<!-- buttons to save form  -->
+<input id="submit_btn" type="button" name="Submit" 
+    class="btn btn-success btn-lg btn-block d-none btn_submit_click" value="SUBMIT" onclick=submit_btn_called("{% url 'save_order_or_update_order' %}") >
+<!--pending orders data-->
+<input id="save_btn" type="button" name="SubmitPending" class="btn btn-success btn-lg btn-block"
+    value="SAVE" onclick=save_btn_called("{% url 'save_order_to_pending' %}") >
+<!-- end buttons to save form  -->
+</form>
+
+
+
+        

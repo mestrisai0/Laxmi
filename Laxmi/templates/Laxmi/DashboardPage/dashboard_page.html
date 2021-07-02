@@ -1,0 +1,214 @@
+{% extends 'Laxmi/base.html' %}
+{% load static %}
+
+{% block activemenu %} 
+class='activeMenu'
+{% endblock activemenu %}
+
+{% block content %}
+
+
+<div class="card-deck">
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title text-center">Plate Positive status </h5>
+                
+            <canvas id="myChart1"></canvas>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title text-center">Orders Per Month</h5>
+            <canvas id="myChart2"></canvas>
+        </div>
+    </div>
+
+
+    <div class="card">
+        <div class="card-body">
+            {{ lst_to_pass|json_script:"lst_to_pass" }}
+            {{ lst_to_pass_plate|json_script:"lst_to_pass_plate" }}
+
+            <h5 class="card-title text-center">Punch status</h5>
+            <canvas id="myChart3"></canvas>
+        </div>
+    </div>
+
+    <br>
+</div>
+    <!-- flex before table  -->
+
+<!-- <div class="d-flex">
+    <div class="mr-auto p-2">
+        <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" onkeyup="myFunction()" placeholder="Search"
+                aria-label="Search" id="table_Search" />
+        </form>
+
+    </div>
+
+    <div class="p-2 export-btn">
+        <div class="btn-group dropleft">
+            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">Export</button>
+            <div class="dropdown-menu">
+                <div class="p-2">
+                    <a href="#" type="button" class="dropdown-item">.pdf</a>
+                </div>
+                <div class="p-2 bd-highlight ">
+                    <a href="#" type="button" class="dropdown-item">.csv</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<!-- Table Start -->
+<div class="row mt-5">
+
+    <div class="col-md">
+
+        <div class="card card-body table-responsive">
+            <div class="d-flex flex-row filter_date" >
+                <div class="form-group mr-3">
+                    <input type="text" class="form-control" id="min" placeholder="start text">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="max" placeholder="end date">
+                </div>
+            </div>
+
+            <table class="table table-striped text-center" id="Ordertable">
+                <thead>
+                    <tr class="order-pie">
+                        <th class="text-center" style="width:150px;">Client Name</th>
+                        <th class="text-center">Client Product</th>
+                        <th class="text-center">Build Location</th>
+                        <th class="text-center" style="width:150px;">Date</th>
+                        <th class="text-center">Priority</th>
+                        <th class="text-center">Punch</th>
+                        <th class="text-center">Punch Status</th>
+                        <th class="text-center">Plate +ve Status</th>
+                        <th class="text-center acts" style="width: 120px !important;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in orders %}
+
+                    <tr>
+                        <td class="editable" data-id="{{ data.client_product_id}}" data-type="name">{{data.client_product_id.client_code.client_name}}
+                        </td>
+                        <td class="text-center">{{data.client_product_id}}</td>
+                        <td class="text-center">{{data.build_location}}</td>
+                        <td class="text-center">{{data.order_date | date:"d/m/Y"}}</td>
+                        <td class="{{ data.priority }}">{{data.priority}}</td>
+                        {%if data.board_id  %}
+                            <td>
+                                <a class="btn btn-dark btn-sm  text-white id_show_board" data-toggle="modal" title="Show_Board" data-target="#showPunch" data-sid-id="{{data.board_id_id}}" >
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                            </td>
+                        {% else %}
+                            <td>
+                                <a class="btn btn-dark btn-sm text-white disabled" title="No Board Available">                                
+                                    <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                                </a>
+                            </td>
+                        {% endif %}
+                        <td>
+                            {% if data.punch_status %}
+                                <a class="btn btn-{{data.punch_color}} btn-sm fix-size">{{data.punch_status}}</a>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if data.plate_status %}
+                                <a class="btn btn-{{data.plate_color}} btn-sm fix-size">{{data.plate_status}}</a>                       
+                            {% endif %}
+                        </td>
+
+                        <td class="text-center">
+
+
+                            <a class="btn btn-dark btn-sm btn_model_from text-white" data-toggle="modal"
+                                data-target="#edit_table_row_dashboard" title="Edit" id="{% url 'EditOrder' %}" data-sid="{{data.id}}">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                            {% if data.pdf_file %}
+                                <a class="btn btn-warning btn-sm" href="{{data.pdf_file.url}}" title="view" target="__blank">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                                <!-- <iframe id="iframe_pdf" src="{{data.pdf_file.url}}" 
+                                    style="width:800px; height:800px;" frameborder="0"></iframe> -->
+                            {% else %}
+                                <a class="btn btn-warning btn-sm disabled" title="No File">
+                                    <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                                </a>
+                            {% endif %}
+
+                            <a class="btn btn-danger btn-sm text-white cancel_order_call"
+                                title="Cancel" id="{% url 'cancel_order_ajax' %}" data-sid="{{data.id}}">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<!-- modal for edit table row in dashboard -->
+ <div class="modal hide fade" id="edit_table_row_dashboard" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+        aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Edit Order</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                
+                {% include 'Laxmi/common_order_code.html' with client_product_disabled='disabled' hide_item='d-none'%}
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal for edit table row in dashboard end -->
+
+
+
+
+<script>
+
+    $(".id_show_board").on("click", function () {
+        var id = $(this).attr('data-sid-id');
+        console.log(id)
+        data_form = {
+            "sid": id
+        };
+        const show_dash_board = (datas) => {
+            console.log(datas)
+            output = '';
+            if (datas.status == "Save") {
+                var x = datas.data_form;
+                output = common_punch_fill_data(x)
+                $(".punch_table_fill").html(output);
+                $(".show_board_dash").modal("show"); 
+            }
+        }
+        common_ajax_call("{% url 'get_punch_dash' %}", data_form, 'GET', show_dash_board)
+    });
+</script>
+
+<!-- Table Start -->
+
+
+{% endblock content %}

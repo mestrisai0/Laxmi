@@ -1,0 +1,6 @@
+*.pyc
+*.bak
+*.dat
+*.dir
+__pycache__/
+db.sqlite3

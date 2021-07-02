@@ -1,0 +1,40 @@
+{% extends 'Laxmi/base.html' %}
+{% load static %}
+
+{% block activemenu_order %}
+aria-expanded="true"
+{% endblock activemenu_order %}
+{% block content %}
+
+<div class="container" style="padding-top:50px;">
+    <div class="card" style="font-size: 18px; ">
+        <div class="card-body" style="padding: 35px;">
+            <h4 class="card-title text-center"><b>New Order Details</b></h4>
+            <br>
+            {% include 'Laxmi/common_order_code.html'%}
+        </div>
+    </div>
+</div>
+
+<script>
+        $(document).ready(function () {
+            $("#client_name_dropdown").select2({
+                placeholder: 'Select Client Name',
+                ajax: {
+                url: "/new_order_page",
+                dataType: 'json',
+                delay: 1000,
+                processResults: function (data, params) {
+                params.page = params.page || 1;
+                console.log(params);
+                return {
+                results: data.results,
+                pagination: {
+                more: (params.page * 3) < data.count_filtered } }; } }, minimumInputLength: 0
+            });
+            $("#client_product_dropdown").select2({});
+        });
+
+    </script>
+
+{% endblock content %}

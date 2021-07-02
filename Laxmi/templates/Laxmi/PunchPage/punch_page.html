@@ -1,0 +1,92 @@
+{% extends 'Laxmi/base.html' %}
+{% load static %}
+{% block activemenu_punch %} 
+class='activeMenu'
+{% endblock activemenu_punch %}
+{% block content %}
+
+<div class="row">
+
+    <div class="col-md text-center">
+
+        <div class="card card-body table-responsive">
+            <div class='d-flex flex-row mb-2'>
+                <h3 class='text-center justify-content-center w-100'>Punch Data</h3>
+                <a href="{% url 'new_punch_page' %}" class='btn btn-primary ml-auto p-2 bd-highlight'>Add Entry</a>
+            </div>
+            <table class="table table-striped text-center" id="Ordertable">
+                <thead>
+                    <tr class="order-pie">
+                        <th class="text-center">Client Name</th>
+                        <th class="text-center">Product_Code</th>
+                        <th class="text-center">Punch</th>
+                        <th class="text-center">CartonSize</th>
+                        <th class="text-center">UPS</th>
+                        <th class="text-center">Design</th>
+                        <th class="text-center">Tuck in Flap</th>
+                        <th class="text-center">Collar In Flap</th>
+                        <th class="text-center">CamPam</th>
+                        <th class="text-center">PlateMaker</th>
+                        <th class="text-center">Remark</th>
+                        <th class="text-center">Location</th>
+                        <th class="text-center">Date</th>
+                        <th class="text-center" href="#">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        {% for data in punch_data  %}
+                            <tr>
+                                <td class="text-center">{{data.client_product_id.client_code.client_name}}</td>
+                                <td class="text-center">{{data.client_product_id}}</td>
+                                <td class="text-center">{{data.punch_no}}</td>
+                                <td class="text-center">{{data.size}}</td>
+                                <td class="text-center">{{data.ups}}</td>
+                                <td class="text-center">{{data.design}}</td>
+                                <td class="text-center">{{data.tuck_in_flap}}</td>
+                                <td class="text-center">{{data.collar_flap}}</td>
+                                <td class="text-center">{{data.cam_pam}}</td>
+                                <td class="text-center">{{data.plate_maker}}</td>
+                                <td class="text-center">{{data.remark}}</td>
+                                <td class="text-center">{{data.location}}</td>
+                                <td class="text-center">{{data.date | date:"d M Y"}}</td>
+                                <td class="text-center">
+                                    <a class="btn btn-dark btn-sm btn_model_from text-white" title="Edit" href= "{% url 'update_punch_page' pk=data.id %}" >
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    <a class="btn btn-danger btn-sm text-white cancel_order_call" data-toggle="modal" data-target="#deletemodal" id='{{data.id}}' onclick = deleteConfirm(this.id)>
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </td>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="deletemodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Are you Sure, you want to delete ?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <a type="button" class="btn btn-danger" id='delete_punch'>Delete</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    const deleteConfirm = (id) => {
+        url = `/delete_punch_page/${id}`
+        delete_punch.setAttribute("href", url);
+    }
+</script>
+
+{% endblock content %}

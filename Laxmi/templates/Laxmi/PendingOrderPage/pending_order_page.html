@@ -1,0 +1,67 @@
+{% extends 'Laxmi/base.html' %}
+{% load static %}
+{% block activemenu_order %}
+aria-expanded="true"
+{% endblock activemenu_order %}
+{% block content %}
+
+<div class="row">
+
+    <div class="col-md text-center">
+
+        <div class="card card-body table-responsive">
+            <h3>Pending Order</h3>
+            <table class="table table-striped text-center" id="Ordertable">
+                <thead>
+                    <tr class="order-pie">
+                        <th class="text-center">Client Name</th>
+                        <th class="text-center">Client Product</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        {% for data in complete  %}
+                            <tr>
+                                <td class="text-center">{{data.client_product_id.client_code.client_name}}</td>
+                                <td class="text-center">{{data.client_product_id}}</td>
+                                <td class="text-center">
+                                    <a class="btn btn-dark btn-sm btn_model_from text-white" data-toggle="modal"
+                                        data-target="#edit_table_row_dashboard" title="Edit" id="{% url 'EditOrder' %}" data-sid="{{data.id}}">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    <a class="btn btn-danger btn-sm text-white cancel_order_call"
+                                        title="Cancel" id="{% url 'cancel_order_ajax' %}" data-sid="{{data.id}}">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- modal for edit table row in dashboard -->
+ <div class="modal fade" id="edit_table_row_dashboard" href="#showPunch" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+        aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Edit Order</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                
+                {% include 'Laxmi/common_order_code.html' with client_product_disabled='disabled' hide_item='d-none'%}
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal for edit table row in dashboard end -->
+
+{% endblock content %}

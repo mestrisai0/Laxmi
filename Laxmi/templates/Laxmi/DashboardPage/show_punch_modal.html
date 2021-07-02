@@ -1,0 +1,102 @@
+{% load static %}
+
+<!-- Modal -->
+
+<!-- Not available modal punch -->
+
+<div class="modal fade board_not_avlable" id="board_not_avlable" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 1055;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body mdal-b">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="not_available">Not Avilable</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- Not available modal punch -->  
+
+<!-- Show punch table -->
+<div class="modal hide fade" id="showPunch" tabindex="-1" role="dialog" aria-labelledby="example5ModalLabel"
+    aria-hidden="true" style="z-index: 1060;">
+    <div class="modal-dialog modal-dialog-centered mw-100 w-70 " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Punch Data</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class='table table-hover modal-hover'>
+                    <thead>
+                        <tr>
+                            <th scope='col'>Board ID</th>
+                            <th scope='col'>client_product_id</th>
+                            <th scope='col'>punch_no</th>
+                            <th scope='col'>size</th>
+                            <th scope='col'>ups</th>
+                            <th scope='col'>design</th>
+                            <th scope='col'>tuck_in_flap</th>
+                            <th scope='col'>cam_pam</th>
+                            <th scope='col'>plate_maker</th>
+                            <th scope='col'>plate_maker_code</th>
+                            <th scope='col'>remark</th>
+                            <th scope='col'>location_id</th>
+                        </tr>
+                    </thead>
+                    <tbody class="punch_table_fill" class="justify-content-center"></tbody>
+                    
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Show punch table -->
+
+<!-- notification Modal -->
+    <div class="modal fade" id="notifModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center" id="exampleModalLabel">Notifications</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body pl-0" id="tadded_1">
+                   {% for msg in messages %}
+                        <a class="pl-3 my-1 notification_tab {{msg.color_class}}">
+                            <div class="d-flex flex-row justify-content-between">
+
+                                <span class="subject">{{ msg.subject }}</span>
+                                <small class="text-secondary date">{{ msg.date }}</small>
+                            </div>
+                            
+                            <span class="message">{{ msg.text }}</span>
+                            <span class="text-danger text-right tablecounts"></span>
+                        </a>
+                    {% endfor %}
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- notification Modal -->
+
+
+
+
+
+
+

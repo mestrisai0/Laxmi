@@ -1,0 +1,50 @@
+{% extends 'Laxmi/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="container" style="padding-top:50px;">
+    {{ location_name|json_script:"location_name" }}
+    <div class="card" style="font-size: 18px; ">
+        <div class="card-body" style="padding: 35px;">
+            <h4 class="card-title text-center"><b>Add New Punch</b></h4>
+
+            <form action= '' method='POST'>
+                {% csrf_token %}
+                {{punch_form|crispy}}
+                <input type="submit" class="btn btn-success" name="Submit">
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        $('#id_client_product_id').select2()
+        id_location = document.getElementById('id_location')
+        div_id_location = document.getElementById('div_id_location')
+        var location_name = JSON.parse(
+            document.getElementById("location_name").textContent
+        );
+        if (location_name == 'all'){
+            console.log('Admin user and he can access all location') 
+        } else {
+            for (var i=0; i<id_location.options.length; i++){ 
+                if (id_location.options[i].text == location_name) { 
+                    value_of_location = id_location.options[i].value
+                    break;
+                } 
+            }
+            id_location.value = value_of_location
+            // id_location.disabled = true 
+            div_id_location.style.display = 'none'
+
+        }
+        
+    })
+</script>
+
+
+{% endblock content %}
